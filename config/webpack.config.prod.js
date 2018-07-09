@@ -46,6 +46,10 @@ const extractTextPluginOptions = shouldUseRelativeAssetPaths
     { publicPath: Array(cssFilename.split('/').length).join('../') }
   : {};
 
+function resolve (dir) {
+  return path.join(__dirname, '..', dir)
+}
+
 // This is the production configuration.
 // It compiles slowly and is focused on producing a fast and minimal bundle.
 // The development configuration is different and lives in a separate file.
@@ -94,6 +98,7 @@ module.exports = {
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
       'react-native': 'react-native-web',
+      '@': resolve('src'),
     },
     plugins: [
       // Prevents users from importing files from outside of src/ (or node_modules/).
@@ -166,7 +171,7 @@ module.exports = {
           // use the "style" loader inside the async code so CSS from them won't be
           // in the main CSS file.
           {
-            test: /\.css$/,
+            test: /\.(css|less)$/,
             loader: ExtractTextPlugin.extract(
               Object.assign(
                 {
@@ -205,6 +210,9 @@ module.exports = {
                         ],
                       },
                     },
+                    {
+                      loader: require.resolve('less-loader') // compiles Less to CSS
+                    }
                   ],
                 },
                 extractTextPluginOptions
@@ -227,6 +235,16 @@ module.exports = {
               name: 'static/media/[name].[hash:8].[ext]',
             },
           },
+          // -----------没卵用-------------
+          // {
+          //   test: /\.(js|jsx)$/,
+          //   include: paths.appSrc,
+          //   loader: require.resolve('babel-plugin-import'),
+          //   query: {
+          //       cacheDirectory: true,
+          //       plugins: [["import", { libraryName: "antd", style: "css"}]]
+          //   }
+          // },
           // ** STOP ** Are you adding a new loader?
           // Make sure to add the new loader(s) before the "file" loader.
         ],

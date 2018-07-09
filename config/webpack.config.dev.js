@@ -22,6 +22,10 @@ const publicUrl = '';
 // Get environment variables to inject into our app.
 const env = getClientEnvironment(publicUrl);
 
+function resolve (dir) {
+  return path.join(__dirname, '..', dir)
+}
+
 // This is the development configuration.
 // It is focused on developer experience and fast rebuilds.
 // The production configuration is different and lives in a separate file.
@@ -88,6 +92,7 @@ module.exports = {
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
       'react-native': 'react-native-web',
+      '@': resolve('src'),
     },
     plugins: [
       // Prevents users from importing files from outside of src/ (or node_modules/).
@@ -157,7 +162,7 @@ module.exports = {
           // In production, we use a plugin to extract that CSS to a file, but
           // in development "style" loader enables hot editing of CSS.
           {
-            test: /\.css$/,
+            test: /\.(css|less)$/,
             use: [
               require.resolve('style-loader'),
               {
@@ -186,6 +191,12 @@ module.exports = {
                   ],
                 },
               },
+              {
+                loader: require.resolve('less-loader'), // compiles Less to CSS
+                options: {
+                  javascriptEnabled: true
+                }
+              }
             ],
           },
           // "file" loader makes sure those assets get served by WebpackDevServer.

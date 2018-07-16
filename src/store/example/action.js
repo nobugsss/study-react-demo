@@ -1,26 +1,21 @@
 import * as home from './action-type';
 
-// 保存表单数据
-export const saveFormData = (value, datatype) => {
+// login
+export const login = (value, datatype) => {
+  // debugger
   return {
-    type: home.SAVEFORMDATA,
+    type: home.LOGIN,
+    value,
+    datatype,
+  }
+}
+// loginOut
+export const loginOut = (value, datatype) => {
+  return {
+    type: home.LOGINOUT,
     value,
     datatype,
   }
 }
 
-// 保存图片地址
-export const saveImg = path => {
-  return {
-    type: home.SAVEIMG,
-    path,
-  }
-}
-
-// 保存图片地址
-export const clearData = () => {
-  return {
-    type: home.CLEARDATA,
-  }
-}
 

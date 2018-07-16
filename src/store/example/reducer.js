@@ -1,19 +1,15 @@
 import * as home from './action-type';
 
 let defaultState = {
-  orderSum: '', //金额
-  name: '', //姓名
-  phoneNo: '', //手机号
-  imgpath: '', //图片地址
+  login: false
 }
 // 首页表单数据
-export const formData = (state = defaultState , action = {}) => {
+export const loginStatus = (state = defaultState , action = {}) => {
+  // debugger
   switch(action.type){
-    case home.SAVEFORMDATA:
-      return {...state, ...{[action.datatype]: action.value}};
-    case home.SAVEIMG:
-      return {...state, ...{imgpath: action.path}};
-    case home.CLEARDATA:
+    case home.LOGIN:
+      return {...state, ...{login: action.value}};
+    case home.LOGINOUT:
       return {...state, ...defaultState};
     default:
       return state;

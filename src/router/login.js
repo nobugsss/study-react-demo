@@ -2,11 +2,11 @@ import React from 'react'
 export default function (Loadable) {
     return [
         {
-            name: 'example',
-            path: '/example',
+            name: 'login',
+            path: '/login',
             exact: true,
             component: Loadable({
-                loader: () => import('@/views/example/example.jsx'),
+                loader: () => import('@/views/login/home.jsx'),
                 loading: () => <div />
             })
         }

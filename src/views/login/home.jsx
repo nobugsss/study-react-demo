@@ -4,23 +4,26 @@ import { login, loginOut } from "@/store/example/action";
 
 class Home extends Component {
   componentWillMount() {
-    let test = this;
-    debugger
-    console.log(test)
+    console.log(this)
   }
   
+  handleClick(name) {
+    console.log(this);
+    console.log(name)
+  }
+
   render() {
     return (
       <div>
         <h1>Home Page</h1>
-        <button>home</button>
+        <button onClick={() => this.handleClick('隔壁老王')}>home</button>
       </div>
     )
   }
 }
 
 export default connect(state => {
-  debugger
+  // debugger
   return state;
 }, {
   login,

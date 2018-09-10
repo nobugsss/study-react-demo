@@ -1,12 +1,12 @@
 import React, {Component} from 'react'
-// import {login} from '@/utils/xhr'
 import {connect} from "react-redux";
 import { login, loginOut } from "@/store/example/action";
 
 class Home extends Component {
-  
   componentWillMount() {
-    // debugger
+    let test = this;
+    debugger
+    console.log(test)
   }
   
   render() {
@@ -20,7 +20,7 @@ class Home extends Component {
 }
 
 export default connect(state => {
-  // debugger
+  debugger
   return state;
 }, {
   login,

@@ -1,109 +1,36 @@
-import Server from './server';
+import axios from 'axios'
 
-class API extends Server{
-  /**
-   *  用途：上传图片
-   *  @url http://cangdu.org:8001/v1/addimg/shop
-   *  返回status为1表示成功
-   *  @method post
-   *  @return {promise}
-   */
-  async uploadImg(params = {}){
-    try{
-      let result = await this.axios('post', 'http://cangdu.org:8001/v1/addimg/shop', params); 
-      if(result && result.status === 1){
-        return result;
-      }else{
-        let err = {
-          tip: '上传图片失败',
-          response: result,
-          data: params,
-          url: 'http://cangdu.org:8001/v1/addimg/shop',
-        }
-        throw err;
-      }
-    }catch(err){
-      throw err;
-    }
+const isProdMode = Object.is(process.env.NODE_ENV, 'production');
+
+const $http = axios.create({
+  baseURL: isProdMode
+    ? '/'
+    : 'http://127.0.0.1:3000/api',
+  headers: {
+    'X-Requested-With': 'XMLHttpRequest',
+    'Content-Type': 'application/json'
   }
+})
 
-  /**
-   *  用途：获取记录数据
-   *  @url http://cangdu.org/shopro/data/record
-   *  返回http_code为200表示成功
-   *  @method get
-   *  @return {promise}
-   */
-  async getRecord(params = {}){
-    try{
-      let result = await this.axios('get', `/shopro/data/record/${params.type}`); 
-      if(result && (result.data instanceof Object) && result.http_code === 200){
-        return result.data;
-      }else{
-        let err = {
-          tip: '获取记录数据失败',
-          response: result,
-          data: params,
-          url: 'http://cangdu.org/shopro/data/record',
-        }
-        throw err;
-      }
-    }catch(err){
-      throw err;
-    }
-  }
+// 添加请求拦截器
+$http
+  .interceptors
+  .request
+  .use(function (config) {
+    return config
+  }, function (error) {
+    // 对请求错误做些什么
+    return Promise.reject(error);
+  });
 
-  /**
-   *  用途：获取商品数据
-   *  @url http://cangdu.org/shopro/data/products
-   *  返回http_code为200表示成功
-   *  @method get
-   *  @return {promise}
-   */
-  async getProduction(params = {}){
-    try{
-      let result = await this.axios('get', '/shopro/data/products', params); 
-      if(result && (result.data instanceof Object) && result.http_code === 200){
-        return result.data.data||[];
-      }else{
-        let err = {
-          tip: '获取商品数据失败',
-          response: result,
-          data: params,
-          url: 'http://cangdu.org/shopro/data/products',
-        }
-        throw err;
-      }
-    }catch(err){
-      throw err;
-    }
-  }
+// 添加响应拦截器
+$http
+  .interceptors
+  .response
+  .use(function (response) {
+    return response;
+  }, function (error) {
+    return Promise.reject(error)
+  });
 
-  /**
-   *  用途：获取佣金数据
-   *  @url http://cangdu.org/shopro/data/balance
-   *  返回http_code为200表示成功
-   *  @method get
-   *  @return {promise}
-   */
-  async getBalance(params = {}){
-    try{
-      let result = await this.axios('get', '/shopro/data/balance', params); 
-      if(result && (result.data instanceof Object) && result.http_code === 200){
-        return result.data.data||{};
-      }else{
-        let err = {
-          tip: '获取佣金数据失败',
-          response: result,
-          data: params,
-          url: 'http://cangdu.org/shopro/data/balance',
-        }
-        throw err;
-      }
-    }catch(err){
-      throw err;
-    }
-  }
-}
-
-export default new API();
+export default $http
